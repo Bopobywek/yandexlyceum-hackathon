@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Oswald');
+
+        body {
+            font-family: 'Oswald', sans-serif;
+        }
+
+        .main-section {
+            width: 250px;
+            margin: 0 auto;
+            margin-top: 130px;
+            padding: 0;
+        }
+
+        .modal-content {
+            box-shadow: 0px 0px 3px #848484;
+            padding: 5px;
+        }
+
+        .btn-submit-user {
+            background-color: #ffff00;
+        }
+
+        .news-content {
+            margin-top: 5px;
+            margin-bottom: 20px;
+        }
+
+        .news-section {
+            width: 400px;
+        }
+
+        .btn-right {
+            position: relative;
+            left: 110px;
+        }
+
+        .dropdown-menu-right {
+            right: 0;
+            left: auto;
+        }
+
+        .row-1 {
+            width: 50%;
+            float: left;
+        }
+
+        .row-2 {
+            width: 50%;
+            float: right;
+        }
+
+        .card-users {
+            margin-top: 10px;
+            width: 60%;
+        }
+    </style>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="/" style="font-size: 16pt; margin-left: 5px;">
+            <img src="https://static.tildacdn.com/tild3134-3734-4162-b162-306435333831/2.svg"
+                 style="max-width: 150px;width: 150px; height: auto; display: block;"
+                 class="d-inline-block align-top" alt="">
+            WebServer
+        </a>
+        <a href="/login" style="position: flex; width: 75px; margin: auto; padding: 5px;margin-right: 0;">
+            <button type="button" class="btn btn-warning">Log in</button>
+        </a>
+    </nav>
+</header>
+<main role="main" class="container">
+    {% block content %}{% endblock %}
+</main>
+{% with messages = get_flashed_messages(with_categories=True) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{ category }} alert-dismissible fade show text-center" style="width: 400px; float: left;
+position: fixed;
+right: 5px;top: 85%;height: 60px;display: block;">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <p style="margin: auto;">{{ message }}</p>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+</body>
+</html>
