@@ -38,7 +38,8 @@ class Tasks(db.Model):
     title = db.Column(db.String(80), unique=False, nullable=False)
     content = db.Column(db.String(1000), unique=False, nullable=False)
     category = db.Column(db.String(80), unique=True, nullable=True)
-    deadline = ''
+    deadline = db.Column(db.String(180), unique=False, nullable=False)
+    priority = db.Column(db.String(180), unique=False, nullable=False)
     stage = db.Column(db.String(80), unique=True, nullable=True)
     creator_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, unique=False)
     creator = db.relationship('Users',
@@ -48,16 +49,16 @@ class Tasks(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.utcnow())
 
     def get_info(self):
-        return str('Task id: {} title: {} content:{}'.format(
-            self.id, self.title, self.content))
+        return 'Task id: {} title: {} content:{} creator: {}, deadline: {} priority: {}'.format(
+            self.id, self.title, self.content, self.creator_id, self.deadline, self.priority)
 
     def __repr__(self):
-        return str('Task id: {} title: {} content:{}'.format(
-            self.id, self.title, self.content))
+        return 'Task id: {} title: {} content:{} creator: {}, deadline: {} priority: {}'.format(
+            self.id, self.title, self.content, self.creator_id, self.deadline, self.priority)
 
     def __str__(self):
-        return 'Task id: {} title: {} content:{}'.format(
-            self.id, self.title, self.content)
+        return 'Task id: {} title: {} content:{} creator: {}, deadline: {} priority: {}'.format(
+            self.id, self.title, self.content, self.creator_id, self.deadline, self.priority)
 
 
 if __name__ == '__main__':

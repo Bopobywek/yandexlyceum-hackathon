@@ -19,6 +19,11 @@ db.create_all()
 api = Api(app)
 
 
+@app.errorhandler(404)
+def not_found(e):
+    return abort(404, message='Task is not found')
+
+
 def generate_token():
     return uuid4().hex
 
@@ -159,6 +164,20 @@ class TaskParser(object):
     def post_parser(self):
         self.parser.add_argument('token', required=True)
 
+    def post_parser2(self):
+        self.parser.add_argument('token', required=True)
+        self.parser.add_argument('title', required=True)
+        self.parser.add_argument('content', required=True)
+        self.parser.add_argument('deadline', required=True)
+        self.parser.add_argument('priority', required=True)
+
+    def put_parser(self):
+        self.parser.add_argument('token', required=True)
+        self.parser.add_argument('title', required=False, default=None)
+        self.parser.add_argument('content', required=False, default=None)
+        self.parser.add_argument('deadline', required=False, default=None)
+        self.parser.add_argument('priority', required=False, default=None)
+
     def return_parser_object(self):
         return self.parser
 
@@ -174,16 +193,97 @@ class TaskAPI(Resource):
             res = Users.query.filter_by(token=args.get('token')).first()
             if res is not None:
                 tasks = [el.get_info() for el in Tasks.query.filter_by(creator_id=res.id).all()]
-                res = {'status': 'OK', 'tasks': tasks}
+                res = {'status': 'OK', 'task': tasks}
                 return jsonify(res)
             else:
                 return abort(403, message='Bad Token')
         else:
             return abort(400, message='Bad Request')
 
+    def post(self):
+        parser = TaskParser()
+        parser.post_parser2()
+        parser = parser.return_parser_object()
+        args = parser.parse_args()
+        if 'token' in args:
+            res = Users.query.filter_by(token=args.get('token')).first()
+            if res is not None:
+                db.session.add(Tasks(title=args.get('title'), content=args.get('content'), creator_id=res.id,
+                                     deadline=args.get('deadline'), priority=args.get('priority')))
+                db.session.commit()
+                return jsonify({'status': 'OK'})
+            else:
+                return abort(403, message='Bad Token')
+        else:
+            return abort(400, message='Bad Request')
+
+
+class TaskIdAPI(Resource):
+    
+    def get(self, id):
+        parser = TaskParser()
+        parser.post_parser()
+        parser = parser.return_parser_object()
+        args = parser.parse_args()
+        if 'token' in args:
+            res = Users.query.filter_by(token=args.get('token')).first()
+            if res is not None:
+                task = Tasks.query.filter_by(id=id).first()
+                if task is not None:
+                    res = {'status': 'OK', 'tasks': task.get_info()}
+                    return jsonify(res)
+                else:
+                    return abort(404, message='Task not found')
+            else:
+                return abort(403, message='Bad Token')
+        else:
+            return abort(400, message='Bad Request')
+    
+    def put(self, id):
+        parser = TaskParser()
+        parser.put_parser()
+        parser = parser.return_parser_object()
+        args = parser.parse_args()
+        if 'token' in args:
+            res = Users.query.filter_by(token=args.get('token')).first()
+            if res is not None:
+                task = Tasks.query.filter_by(id=id, creator_id=res.id).first()
+                if task is not None:
+                    task.title = args.get('title') if args.get('title') is not None else task.title
+                    task.content = args.get('content') if args.get('content') is not None else task.content
+                    task.priority = args.get('priority') if args.get('priority') is not None else task.priority
+                    task.deadline = args.get('deadline') if args.get('deadline') is not None else task.deadline
+                    res = {'status': 'OK'}
+                    return jsonify(res)
+                else:
+                    return abort(404, message='Task not found')
+            else:
+                return abort(403, message='Bad Token')
+        else:
+            return abort(400, message='Bad Request')
+
+    def delete(self, id):
+        parser = TaskParser()
+        parser.post_parser()
+        parser = parser.return_parser_object()
+        args = parser.parse_args()
+        if 'token' in args:
+            res = Users.query.filter_by(token=args.get('token')).first()
+            if res is not None:
+                task = Tasks.query.filter_by(id=id, creator_id=res.id).first()
+                if task is not None:
+                    db.session.delete(task)
+                    db.session.commit()
+                    return jsonify({'status': 'OK'})
+                else:
+                    abort(404, message='Task not Found')
+            else:
+                return abort(403, message='Invalid Login or Password')
+
 
 api.add_resource(TasksResource, '/', '/tasks')
 api.add_resource(TaskAPI, '/api/task')
+api.add_resource(TaskIdAPI, '/api/task/<int:id>')
 api.add_resource(AuthAPI, '/api/auth')
 api.add_resource(AddTask, '/add-task')
 api.add_resource(Registration, '/registration')
