@@ -34,18 +34,30 @@ class Users(db.Model):
 
 class Tasks(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    active = db.Column(db.Boolean, nullable=False)
-    title = db.Column(db.String(80), unique=True, nullable=False)
-    content = db.Column(db.String(1000), unique=True, nullable=False)
-    category = db.Column(db.String(80), unique=True, nullable=False)
+    active = db.Column(db.Boolean, nullable=True)
+    title = db.Column(db.String(80), unique=False, nullable=False)
+    content = db.Column(db.String(1000), unique=False, nullable=False)
+    category = db.Column(db.String(80), unique=True, nullable=True)
     deadline = ''
-    stage = db.Column(db.String(80), unique=True, nullable=False)
+    stage = db.Column(db.String(80), unique=True, nullable=True)
     creator_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, unique=False)
     creator = db.relationship('Users',
                               backref=db.backref('Tasks',
                                                  lazy=True))
     users = db.relationship("Users", secondary=users_identifier)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow())
+
+    def get_info(self):
+        return str('Task id: {} title: {} content:{}'.format(
+            self.id, self.title, self.content))
+
+    def __repr__(self):
+        return str('Task id: {} title: {} content:{}'.format(
+            self.id, self.title, self.content))
+
+    def __str__(self):
+        return 'Task id: {} title: {} content:{}'.format(
+            self.id, self.title, self.content)
 
 
 if __name__ == '__main__':

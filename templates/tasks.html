@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+    <center>
+        <form method="post">
+            <div class="news-section">
+                {% for item in tasks %}
+                    <div class="news-content">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="header-title">
+                                    {{ item.title }}
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <blockquote class="blockquote mb-0">
+                                    <p>{{ item.content }}</p>
+                                    <footer class="blockquote-footer">{{ item.creator.username }}</footer>
+                                    <footer class="blockquote-footer"> Дедлайн через: {{ item.deadline }}</footer>
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </form>
+    </center>
+
+{% endblock %}
