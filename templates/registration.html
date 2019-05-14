@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+    <div class="main-section-reg" id="#Auth">
+        <div class="modal-dialog text-center">
+            <div id="formContainer" class="modal-content">
+                <h2>Регистрация</h2>
+                <form class="col-12" action="" method="post">
+                    {{ form.hidden_tag() }}
+                    <div class="form-group">
+                        {{ form.username(placeholder="Username", class="form-control") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.password(placeholder="Password", class="form-control") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.password_validate(placeholder="Password Validating", class="form-control") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.name(placeholder="Name", class="form-control") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.surname(placeholder="Surname", class="form-control") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.patronymic(placeholder="Patronymic", class="form-control") }}
+                    </div>
+                    {{ form.submit(class="btn btn-submit-user") }}
+                </form>
+            </div>
+        </div>
+        {% if error %}
+            <div class="alert alert-danger text-center" role="alert">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        {% for error in form.username.errors %}
+            <div class="alert alert-danger text-center" role="alert">
+                {{ error }}
+            </div>
+        {% endfor %}
+
+        {% for error in form.password.errors %}
+            <div class="alert alert-danger text-center" role="alert">
+                {{ error }}
+            </div>
+        {% endfor %}
+
+        {% for error in form.name.errors %}
+            <div class="alert alert-danger text-center" role="alert">
+                {{ error }}
+            </div>
+        {% endfor %}
+
+        {% for error in form.surname.errors %}
+            <div class="alert alert-danger text-center" role="alert">
+                {{ error }}
+            </div>
+        {% endfor %}
+
+        {% for error in form.patronymic.errors %}
+            <div class="alert alert-danger text-center" role="alert">
+                {{ error }}
+            </div>
+        {% endfor %}
+
+        {% for error in form.password_validate.errors %}
+            <div class="alert alert-danger text-center" role="alert">
+                {{ error }}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

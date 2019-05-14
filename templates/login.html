@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="main-section" id="#Auth">
+    <div class="modal-dialog text-center">
+        <div id="formContainer" class="modal-content">
+            <h2>Авторизация</h2>
+            <form class="col-12" style="margin-top: 10px;" action="" method="post">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.username(placeholder="Username", class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ form.password(placeholder="Password", class="form-control") }}
+                </div>
+                {{ form.submit(class="btn btn-submit-user") }}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
