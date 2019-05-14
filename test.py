@@ -39,9 +39,7 @@ import requests
 # print(requests.post(url='http://127.0.0.1:8080/api/task', params={'token': '123'}).json())
 #
 # print(requests.post(url='http://127.0.0.1:8080/api/task', params={}).json())
-print(requests.post(url='http://127.0.0.1:8080/api/task', params={'token': '123'}).json())
-
-print(requests.post(url='http://127.0.0.1:8080/api/task', params={}).json())
+print('GET TEST')
 print(requests.get(url='http://127.0.0.1:8080/api/task/1',
                    params={'token': requests.post(url='http://127.0.0.1:8080/api/auth',
                                                   params={'login': '1234',
@@ -58,11 +56,44 @@ print(requests.get(url='http://127.0.0.1:8080/api/task/3',
                                                           'password': '12341234'}).json().get('token')}).json())
 
 print(requests.get(url='http://127.0.0.1:8080/api/task/1',
-                   params={'password': '12341234'}).json().get('token'))
-
-print(requests.get(url='http://127.0.0.1:8080/api/task/1',
                    params={'token': requests.post(url='http://127.0.0.1:8080/api/auth',
                                                   params={'login': '1234'}).json().get('token')}).json())
 print(requests.get(url='http://127.0.0.1:8080/api/task/1',
                    params={}).json())
+print('DELETE TEST')
+print(requests.delete(url='http://127.0.0.1:8080/api/task/1',
+                      params={'token': requests.post(url='http://127.0.0.1:8080/api/auth',
+                                                     params={'login': '1234',
+                                                             'password': '12341234'}).json().get('token')}).json())
 
+print(requests.delete(url='http://127.0.0.1:8080/api/task/2',
+                      params={'token': requests.post(url='http://127.0.0.1:8080/api/auth',
+                                                     params={'login': '1234',
+                                                             'password': '12341234'}).json().get('token')}).json())
+
+print(requests.delete(url='http://127.0.0.1:8080/api/task/3',
+                      params={'token': requests.post(url='http://127.0.0.1:8080/api/auth',
+                                                     params={'login': '1234',
+                                                             'password': '12341234'}).json().get('token')}).json())
+
+print(requests.delete(url='http://127.0.0.1:8080/api/task/1',
+                      params={'token': requests.post(url='http://127.0.0.1:8080/api/auth',
+                                                     params={'login': '1234'}).json().get('token')}).json())
+print(requests.delete(url='http://127.0.0.1:8080/api/task/1',
+                      params={}).json())
+
+print('PUT TEST')
+print(requests.put(url='http://127.0.0.1:8080/api/task/4',
+                    params={'token': requests.post(url='http://127.0.0.1:8080/api/auth',
+                                                   params={'login': '1234',
+                                                           'password': '12341234'}).json().get('token'),
+                            'title': 'dsasad', 'content': '66dasdsa8',
+                            'deadline': 'Три дня',
+                            'priority': 'Второстепенный'}).json())
+print(requests.put(url='http://127.0.0.1:8080/api/task/432213213213',
+                    params={'token': requests.post(url='http://127.0.0.1:8080/api/auth',
+                                                   params={'login': '1234',
+                                                           'password': '12341234'}).json().get('token'),
+                            'title': 'dsasad', 'content': '66dasdsa8',
+                            'deadline': 'Три дня',
+                            'priority': 'Второстепенный'}).json())
